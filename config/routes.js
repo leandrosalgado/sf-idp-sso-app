@@ -24,14 +24,11 @@ module.exports = function (app, config, passport) {
   app.get("/files/:name", function (req, res) {
     if (req.isAuthenticated()) {
       console.log({ originalUrl: req.originalUrl });
-      res.set({
-        Location: req.originalUrl,
-      });
+      res.location(req.originalUrl);
+
       res.download(`${folderPath}/helloworld.txt`, req.params.name, (err) => {
         if (err) {
           console.error(err);
-        } else {
-          res.redirect(req.originalUrl);
         }
       });
     } else {
