@@ -23,8 +23,9 @@ module.exports = function (app, config, passport) {
 
   app.get("/files/:name", function (req, res) {
     if (req.isAuthenticated()) {
-      console.log({ originalUrl: req.originalUrl });
-      res.location(req.originalUrl);
+      const fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+      console.log({ originalUrl: fullUrl });
+      res.location(fullUrl);
 
       res.download(`${folderPath}/helloworld.txt`, req.params.name, (err) => {
         if (err) {
