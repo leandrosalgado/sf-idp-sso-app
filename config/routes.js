@@ -27,7 +27,13 @@ module.exports = function (app, config, passport) {
       res.set({
         Location: req.originalUrl,
       });
-      res.download(`${folderPath}/helloworld.txt`, req.params.name);
+      res.download(`${folderPath}/helloworld.txt`, req.params.name, (err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          res.redirect(req.originalUrl);
+        }
+      });
     } else {
       console.log({ redirectUrl: req.session.returnTo });
       req.session.returnTo = req.originalUrl;
@@ -42,7 +48,9 @@ module.exports = function (app, config, passport) {
       failureFlash: true,
     }),
     function (req, res) {
-      res.redirect(req.session.returnTo || "/");
+      const redirectTo = req.session.returnTo || "/";
+      console.log(redirectTo);
+      res.redirect(redirectTo);
       delete req.session.returnTo;
     }
   );
