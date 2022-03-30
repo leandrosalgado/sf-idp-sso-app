@@ -7,11 +7,7 @@ module.exports = function (app, config, passport) {
         backUrl: config.app.backUrl,
       });
     } else {
-      res.render("index.html", {
-        user: null,
-        title: config.app.name,
-        backUrl: config.app.backUrl,
-      });
+      res.redirect("/login");
     }
   });
 
