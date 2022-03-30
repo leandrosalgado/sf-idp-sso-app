@@ -1,26 +1,19 @@
 module.exports = function (app, config, passport) {
-  app.get(
-    "/",
-    passport.authenticate(config.passport.strategy, {
-      failureRedirect: "/login",
-      failureFlash: true,
-    }),
-    function (req, res) {
-      if (req.isAuthenticated()) {
-        res.render("index.html", {
-          user: req.user,
-          title: config.app.name,
-          backUrl: config.app.backUrl,
-        });
-      } else {
-        res.render("index.html", {
-          user: null,
-          title: config.app.name,
-          backUrl: config.app.backUrl,
-        });
-      }
+  app.get("/", function (req, res) {
+    if (req.isAuthenticated()) {
+      res.render("index.html", {
+        user: req.user,
+        title: config.app.name,
+        backUrl: config.app.backUrl,
+      });
+    } else {
+      res.render("index.html", {
+        user: null,
+        title: config.app.name,
+        backUrl: config.app.backUrl,
+      });
     }
-  );
+  });
 
   app.get(
     "/login",
