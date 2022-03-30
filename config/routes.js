@@ -27,6 +27,7 @@ module.exports = function (app, config, passport) {
       });
       res.send(text[req.params.name]);
     } else {
+      console.log({ redirectUrl: req.session.returnTo });
       req.session.returnTo = req.originalUrl;
       res.redirect("/login");
     }
