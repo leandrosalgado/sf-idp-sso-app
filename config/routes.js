@@ -19,6 +19,19 @@ module.exports = function (app, config, passport) {
     })
   );
 
+  var text = { "hello.txt": "Hello World!", "bye.txt": "Goodbye Cruel World!" };
+  app.get("/files/:name", function (req, res) {
+    if (req.isAuthenticated()) {
+      res.set({
+        "Content-Disposition": 'attachment; filename="req.params.name"',
+      });
+      res.send(text[req.params.name]);
+    } else {
+      req.session.returnTo = req.originalUrl;
+      res.redirect("/login");
+    }
+  });
+
   app.post(
     "/login/callback",
     passport.authenticate(config.passport.strategy, {
@@ -26,7 +39,8 @@ module.exports = function (app, config, passport) {
       failureFlash: true,
     }),
     function (req, res) {
-      res.redirect("/");
+      res.redirect(req.session.returnTo || "/");
+      delete req.session.returnTo;
     }
   );
 
