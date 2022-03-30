@@ -19,13 +19,9 @@ module.exports = function (app, config, passport) {
     })
   );
 
-  var text = { "hello.txt": "Hello World!", "bye.txt": "Goodbye Cruel World!" };
   app.get("/files/:name", function (req, res) {
     if (req.isAuthenticated()) {
-      res.set({
-        "Content-Disposition": `attachment; filename="${req.params.name}"`,
-      });
-      res.send(text[req.params.name]);
+      res.download("/helloworld.txt");
     } else {
       console.log({ redirectUrl: req.session.returnTo });
       req.session.returnTo = req.originalUrl;
