@@ -1,4 +1,6 @@
 module.exports = function (app, config, passport) {
+  const folderPath = __dirname;
+
   app.get("/", function (req, res) {
     if (req.isAuthenticated()) {
       res.render("index.html", {
@@ -21,7 +23,7 @@ module.exports = function (app, config, passport) {
 
   app.get("/files/:name", function (req, res) {
     if (req.isAuthenticated()) {
-      res.download("/helloworld.txt");
+      res.download(`${folderPath}/helloworld.txt`, req.params.name);
     } else {
       console.log({ redirectUrl: req.session.returnTo });
       req.session.returnTo = req.originalUrl;
