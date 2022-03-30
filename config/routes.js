@@ -23,7 +23,7 @@ module.exports = function (app, config, passport) {
   app.get("/files/:name", function (req, res) {
     if (req.isAuthenticated()) {
       res.set({
-        "Content-Disposition": 'attachment; filename="req.params.name"',
+        "Content-Disposition": `attachment; filename="${req.params.name}"`,
       });
       res.send(text[req.params.name]);
     } else {
